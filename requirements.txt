@@ -6,4 +6,5 @@ statsmodels==0.14.0
 streamlit==1.27.2
 TA_Lib==0.4.19
 technical==1.4.0
-tvdatafeed==2.1.0
+!pip install --upgrade --no-cache-dir git+https://github.com/rongardF/tvdatafeed.git
+#tvdatafeed==2.1.0
