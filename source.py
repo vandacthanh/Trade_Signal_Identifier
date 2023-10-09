@@ -135,45 +135,6 @@ def signal_detector(df, interval):
         st.warning(f"At {check_time} - {interval} interval - Market is under consolidation.")
     return None 
 
-def time_series_prediction(df):
-    # Data preparation
-    data = df.drop(['datetime', 
-                    'symbol',
-                    'time',
-                    'time_formated'], axis=1)
-    data.index = df.time_formated
-    train = data[:int(0.8*(len(data)))]
-    valid = data[int(0.8*(len(data))):]
-    #fit the model
-    from statsmodels.tsa.vector_ar.var_model import VAR
-
-    model = VAR(endog=train)
-    model_fit = model.fit()
-
-    # make prediction on validation
-    prediction = model_fit.forecast(model_fit.y, steps=len(valid))
-
-    
-    #converting predictions to dataframe
-    cols = data.columns
-    pred = pd.DataFrame(index=range(0,len(prediction)),columns=[cols])
-    for j in range(0,13):
-        for i in range(0, len(prediction)):
-            pred.iloc[i][j] = prediction[i][j]
-            
-            
-    st.markdown(f"<h1 style='text-align: center; color: grey;'> TIME SERIES PREDICTION ON {asset} </h1>", unsafe_allow_html=True)
-    #check rmse
-    st.markdown(f"<h5 style='text-align: center; color: grey;'> MODEL PERFORMANCE ON {asset} </h5>", unsafe_allow_html=True)
-    for i in cols:
-        st.write('rmse value for', i, 'is : ', sqrt(mean_squared_error(pred[i], valid[i])))
-    # make prediction
-    model = VAR(endog=data)
-    model_fit = model.fit()
-    yhat = model_fit.forecast(model_fit.y, steps=10)
-    yhat = pd.DataFrame(index=range(0,len(yhat)),columns=[cols])
-    yhat.reset_index(inplace=True)
-    return  yhat
 
 if __name__ == "__main__":
 
