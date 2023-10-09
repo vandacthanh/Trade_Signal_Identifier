@@ -4,7 +4,7 @@ import numpy as np
 
 import talib
 from technical.indicators import ichimoku
-from tvDatafeed import TvDatafeed, Interval
+
 
 import plotly.express as px
 import plotly.graph_objects as go
@@ -15,6 +15,21 @@ from datetime import datetime
 from statsmodels.tsa.vector_ar.var_model import VAR
 from sklearn.metrics import mean_squared_error
 from math import sqrt
+import subprocess
+import sys
+import time
+
+try:
+  # replace "yourpackage" with the package you want to import
+  from tvDatafeed import TvDatafeed, Interval
+
+# This block executes only on the first run when your package isn't installed
+except ModuleNotFoundError as e:
+  subprocess.Popen([f'{sys.executable} -m pip install --upgrade --no-cache-dir git+https://github.com/rongardF/tvdatafeed.git'], shell=True)
+  
+  # wait for subprocess to install package before running your actual code below
+  time.sleep(90)
+
 
 def data_retrieval(asset, n_bars, price_selection, period, interval):
     tv = TvDatafeed()
